@@ -25,7 +25,7 @@ h1 {
 }
 
 .gallery-item {
-    width: 180;
+    width: 160;
     height: 300px;
     object-fit: cover;
     border-radius: 10px;
