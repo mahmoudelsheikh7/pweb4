@@ -1,0 +1,59 @@
+// Select all gallery items
+const galleryItems = document.querySelectorAll('.gallery-item');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxVideo = document.getElementById('lightbox-video');
+const closeBtn = document.getElementById('close');
+
+// Function to open the lightbox
+function openLightbox(item) {
+    lightbox.style.display = 'flex';
+    if (item.tagName === 'IMG') {
+        lightboxImg.src = item.src;
+        lightboxImg.style.display = 'block';
+        lightboxVideo.style.display = 'none';
+    } else if (item.tagName === 'VIDEO') {
+        lightboxVideo.src = item.querySelector('source').src; // Get video source
+        lightboxVideo.style.display = 'block';
+        lightboxImg.style.display = 'none';
+    }
+}
+
+// Function to close the lightbox
+function closeLightbox() {
+    lightbox.style.display = 'none';
+    lightboxVideo.pause(); // Pause the video
+    lightboxVideo.src = ''; // Reset video source
+}
+
+// Add click event to each gallery item
+galleryItems.forEach(item => {
+    item.addEventListener('click', () => openLightbox(item));
+});
+
+// Add click event to close button
+closeBtn.addEventListener('click', closeLightbox);
+
+// Add click event to lightbox to close it when clicking outside the content
+lightbox.addEventListener('click', closeLightbox);
+
+// Add keydown event to close lightbox when pressing "Escape"
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        closeLightbox();
+    }
+});
+
+// Add fade-in effect for images and videos on load
+window.onload = () => {
+    const items = document.querySelectorAll('.gallery-item');
+    items.forEach((item, index) => {
+        item.style.opacity = 0;
+        item.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            item.style.opacity = 1;
+            item.style.transform = 'translateY(0)';
+            item.style.transition = 'opacity 0.5s, transform 0.5s';
+        }, index * 100);
+    });
+};
