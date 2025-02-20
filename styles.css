@@ -2,14 +2,14 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #2e2c34;
+    background-color: #000000;
 }
 
 header {
     text-align: center;
-    padding: 20px;
-    background-color: #394039;
-    color: white;
+    padding: 10px;
+    background-color: #4f2972;
+    color: rgb(255, 255, 255);
 }
 
 h1 {
@@ -19,8 +19,8 @@ h1 {
 
 .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
     padding: 20px;
 }
 
@@ -30,8 +30,8 @@ h1 {
     object-fit: cover;
     border-radius: 10px;
     transition: transform 0.3s, box-shadow 0.3s;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
+    background-color: #282828;
+    border: 1px solid #5d5473;
 }
 
 .gallery-item:hover {
@@ -63,7 +63,7 @@ h1 {
     position: absolute;
     top: 20px;
     right: 30px;
-    color: white;
+    color: rgb(132, 126, 126);
     font-size: 40px;
     cursor: pointer;
 }
