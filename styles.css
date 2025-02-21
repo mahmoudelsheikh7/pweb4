@@ -2,7 +2,7 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #000000,#000000,#a5a3a3, #1e4a33,#585859, #800080); /* تدرج لوني من الأسود إلى الأزرق ثم البنفسجي */
+    background: linear-gradient(135deg, #000000,#000000,#a5a3a3, #1e4a33,#585859, #800080); 
 }
 
 header {
@@ -25,7 +25,7 @@ h1 {
 }
 
 .gallery-item {
-    width: 160;
+    width: 160px;
     height: 300px;
     object-fit: cover;
     border-radius: 10px;
