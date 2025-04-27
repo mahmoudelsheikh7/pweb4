@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض أعمالك</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background: #f5f6fa;
+        }
+
+        /* أنيميشن التحميل */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background: var(--primary-color);
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: var(--secondary-color);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .media-frame {
+            border: 3px solid;
+            border-radius: 10px;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+            transition: transform 0.3s ease;
+        }
+
+        .media-frame:hover {
+            transform: translateY(-5px);
+        }
+
+        .media-item {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .daily-quote {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 30px 0;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            padding: 30px;
+            background: var(--primary-color);
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 28px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--secondary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav-buttons">
+        <button class="nav-btn" onclick="showSection('photos')">الصور</button>
+        <button class="nav-btn" onclick="showSection('videos')">الفيديوهات</button>
+    </nav>
+
+    <div class="daily-quote" id="dailyQuote"></div>
+
+    <section id="photos" class="gallery"></section>
+    <section id="videos" class="gallery" style="display: none;"></section>
+
+    <div class="social-icons">
+        <a href="رابط-فيسبوك" class="social-icon"><i class="fab fa-facebook"></i></a>
+        <a href="رابط-تويتر" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="رابط-انستجرام" class="social-icon"><i class="fab fa-instagram"></i></a>
+    </div>
+
+    <script>
+        // جلب الجمل اليومية من ملف quotes.txt
+        fetch('quotes.txt')
+            .then(response => response.text())
+            .then(text => {
+                const quotes = text.split('\n').filter(line => line.trim());
+                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                document.getElementById('dailyQuote').textContent = randomQuote;
+            });
+
+        // إدارة المحتوى تلقائياً
+        async function loadMedia(folder, containerId) {
+            const response = await fetch(folder);
+            const text = await response.text();
+            const parser = new DOMParser();
+            const html = parser.parseFromString(text, 'text/html');
+            const links = [...html.querySelectorAll('a')].map(a => a.href);
+
+            const container = document.getElementById(containerId);
+            container.innerHTML = links
+                .filter(link => link.match(/\.(jpg|jpeg|png|gif|mp4|webm)$/))
+                .map(link => `
+                    <div class="media-frame">
+                        ${link.match(/video/) ? `
+                            <video class="media-item" controls>
+                                <source src="${link}" type="video/mp4">
+                            </video>
+                        ` : `
+                            <img class="media-item" loading="lazy" src="${link}" alt="صورة">
+                        `}
+                    </div>
+                `).join('');
+        }
+
+        // إظهار الأقسام
+        function showSection(sectionId) {
+            document.querySelectorAll('.gallery').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'grid';
+        }
+
+        // التحميل الأولي
+        window.addEventListener('DOMContentLoaded', () => {
+            loadMedia('images/', 'photos');
+            loadMedia('videos/', 'videos');
+        });
+    </script>
+</body>
+
+</html>
